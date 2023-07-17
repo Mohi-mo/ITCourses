@@ -1,13 +1,71 @@
 ---
-- name: Пример плейбука для подключения к серверу
+- name: Playbook
   hosts: web
   become: yes
 
-  tasks:
-    - name: Вывод информации о сервере
-      debug:
-        msg: "Hello from server with IP 93.183.73.116"
+  tasks:   
+    - name: All_updates for Ubuntu
+      apt:
+        upgrade: dist
+        update_cache: yes
+      when: ansible_distribution == 'Ubuntu'
 
-    # Добавьте здесь другие задачи, которые вы хотите выполнить на сервере
+    - name: All_updates for Oracle Linux
+      yum:
+        name: '*'
+        state: latest
+      when: ansible_distribution == 'OracleLinux'
+
+    - name: Adding_new_user
+      user:
+        name: dmitriy.semin
+        state: present
+        createhome: yes
+
+    - name: Adding_root_rights
+      lineinfile:
+        dest: /etc/sudoers
+        line: 'dmitriy.semin ALL=(ALL) NOPASSWD: ALL'
+        validate: visudo -cf %s
+
+    - name: Adding_SSH-key
+      ansible.builtin.lineinfile:
+        user: dmitriy.semin
+        dest: '/root/.ssh/authorized_keys'
+        mode: '0640'
+        line: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILgE2/Z7S0C2rO14CTKFsdHUVG25glHe9wQEphN0kKHP dmitriy.semin@itglobal.com
+        create: true
 
 
+    - name: Install_mc,_htop,_atop,_ncdu
+      apt:
+        name:
+          - mc
+          - htop
+          - atop
+          - ncdu
+        state: present
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: All_updates for Oracle Linux
+      yum:
+        name:
+          - mc
+          - htop
+          - atop
+          - ncdu
+        state: latest
+      when: ansible_distribution == 'OracleLinux'
+
+    - name: Change_SSH-port_and_closed_access
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: '^#?Port'
+        line: 'Port 10022'
+      notify: restart sshd
+
+  handlers:
+    - name: restart sshd
+      service:
+        name: sshd
+        state: restarted
