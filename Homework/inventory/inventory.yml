@@ -1,9 +1,0 @@
----
-- name: Test_playbook
-  hosts: servers
-  become: true
-
-  tasks:
-    - name: Task_test
-      shell: echo "Hello, Ansible!"
-      

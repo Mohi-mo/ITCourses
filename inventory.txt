@@ -1,5 +1,0 @@
-[servers]
-server1 ansible_host=93.183.73.116
-
-[web_servers]
-server1
