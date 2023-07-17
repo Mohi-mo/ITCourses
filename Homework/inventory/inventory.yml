@@ -6,3 +6,4 @@
   tasks:
     - name: Task_test
       shell: echo "Hello, Ansible!"
+      
