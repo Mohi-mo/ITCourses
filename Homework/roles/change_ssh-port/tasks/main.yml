@@ -1,0 +1,7 @@
+# For change ssh-port
+- name: Change_SSH-port_and_closed_access
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?Port'
+    line: 'Port 10022'
+  notify: restart sshd

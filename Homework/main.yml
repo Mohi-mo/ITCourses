@@ -1,0 +1,21 @@
+---
+- name: Deploy Common Tasks
+  hosts: web
+  become: yes
+  gather_facts: true
+  roles:
+    - add_new_user
+    - add_ssh_keys
+    - change_ssh-port
+    - common
+  tags: 
+    - common
+
+- name: Deploy Nginx
+  hosts: nginx_web
+  become: yes
+  gather_facts: true
+  roles:
+    - nginx
+  tags:
+    -nginx

@@ -1,0 +1,32 @@
+ # For All_updates
+- name: All_updates for Ubuntu
+  apt:
+    upgrade: dist
+    update_cache: yes
+  when: ansible_distribution == 'Ubuntu'
+
+- name: All_updates for Oracle Linux
+  yum:
+    name: '*'
+    state: latest
+  when: ansible_distribution == 'OracleLinux'
+
+- name: Install_mc,_htop,_atop,_ncdu for Ubuntu
+  apt:
+    name:
+      - mc
+      - htop
+      - atop
+      - ncdu
+    state: present
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Install_mc,_htop,_atop,_ncdu for Oracle
+  yum:
+    name:
+      - mc
+      - htop
+      - atop
+      - ncdu
+    state: latest
+  when: ansible_distribution == 'OracleLinux'

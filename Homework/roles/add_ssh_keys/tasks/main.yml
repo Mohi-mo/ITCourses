@@ -1,0 +1,20 @@
+# For add_ssh_keys
+- name: Create SSH directory for users
+  file:
+    path: /home/dmitriy.semin/.ssh
+    state: directory
+    mode: '0700'
+
+- name: Add SSH key
+  copy:
+    content: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILgE2/Z7S0C2rO14CTKFsdHUVG25glHe9wQEphN0kKHP dmitriy.semin@itglobal.com"
+    dest: /home/dmitriy.semin/.ssh/authorized_keys
+    mode: '0600'
+    owner: dmitriy.semin
+
+#- name: Adding_SSH-key
+#  ansible.builtin.lineinfile:
+#    dest: '/root/.ssh/authorized_keys'
+#    mode: '0640'
+#    line: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILgE2/Z7S0C2rO14CTKFsdHUVG25glHe9wQEphN0kKHP dmitriy.semin@itglobal.com
+#    create: true

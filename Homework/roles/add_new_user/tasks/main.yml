@@ -1,0 +1,12 @@
+ # For add_user
+- name: Adding_new_user
+  user:
+    name: dmitriy.semin
+    state: present
+    createhome: yes
+
+- name: Adding_root_rights
+  lineinfile:
+    dest: /etc/sudoers
+    line: 'dmitriy.semin ALL=(ALL) NOPASSWD: ALL'
+    validate: visudo -cf %s
